@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Đăng ký</title>
+  <link rel="stylesheet" href="components/auth.css">
+</head>
+<body>
+  <div class="auth-container">
+    <h2>Đăng ký</h2>
+    <form id="register-form">
+      <input type="text" id="reg-username" placeholder="Tên đăng nhập" required />
+      <input type="password" id="reg-password" placeholder="Mật khẩu" required />
+      <button type="submit">Đăng ký</button>
+      <p>Đã có tài khoản? <a href="login.html">Đăng nhập</a></p>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById("register-form").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const username = document.getElementById("reg-username").value;
+      const password = document.getElementById("reg-password").value;
+
+      let users = JSON.parse(localStorage.getItem("users")) || [];
+
+      if (users.find(u => u.username === username)) {
+        alert("Tên đăng nhập đã tồn tại!");
+        return;
+      }
+
+      const newUser = { username, password };
+      users.push(newUser);
+      localStorage.setItem("users", JSON.stringify(users));
+      alert("Đăng ký thành công! Mời đăng nhập.");
+      window.location.href = "login.html";
+    });
+  </script>
+</body>
+</html>
+<script>
+document.getElementById("register-form").addEventListener("submit", async function (e) {
+  e.preventDefault();
+
+  const username = document.getElementById("username").value;
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  try {
+    const res = await fetch("http://localhost:5000/api/auth/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ username, email, password })
+    });
+
+    const data = await res.json();
+    if (res.ok) {
+      document.getElementById("message").innerText = "✅ Đăng ký thành công!";
+    } else {
+      document.getElementById("message").innerText = `❌ ${data.message || 'Lỗi đăng ký!'}`;
+    }
+  } catch (err) {
+    console.error(err);
+    document.getElementById("message").innerText = "❌ Lỗi kết nối server!";
+  }
+});
+</script>

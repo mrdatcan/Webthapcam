@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <title>Tin tức & Sự kiện</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="news.css"> <!-- nếu có CSS riêng cho news -->
+</head>
+<body>
+
+  <!-- PHẦN TIN TỨC MỚI -->
+  <div class="news-section">
+    <h2 class="news-title">TIN TỨC MỚI</h2>
+    <div class="news-wrapper">
+      <button class="news-prev">‹</button>
+      <div class="news-slider" id="news-slider"></div>
+      <button class="news-next">›</button>
+    </div>
+  </div>
+
+  <!-- JS: tải dữ liệu từ file JSON -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const slider = document.getElementById("news-slider");
+
+      fetch("data/news.json")
+        .then(res => res.json())
+        .then(data => {
+          data.forEach(news => {
+            const div = document.createElement("div");
+            div.className = "news-item";
+            div.innerHTML = `
+              <img src="${news.image}" alt="${news.title}">
+              <h3>${news.title}</h3>
+            `;
+            slider.appendChild(div);
+          });
+        });
+
+      // Nút trượt
+      const prevBtn = document.querySelector(".news-prev");
+      const nextBtn = document.querySelector(".news-next");
+
+      prevBtn.addEventListener("click", () => {
+        slider.scrollBy({ left: -320, behavior: "smooth" });
+      });
+
+      nextBtn.addEventListener("click", () => {
+        slider.scrollBy({ left: 320, behavior: "smooth" });
+      });
+    });
+  </script>
+</body>
+</html>

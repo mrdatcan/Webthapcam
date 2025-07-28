@@ -1,0 +1,45 @@
+[
+  {
+    "id": 1,
+    "name": "Sản phẩm A",
+    "price": 150000,
+    "image": "img/drink.webp"
+  },
+
+  {
+    "id": 2,
+    "name": "Sản phẩm B",
+    "price": 200000,
+    "image": "img/doan2.webp"
+  },
+
+
+
+  {
+    "id": 3,
+    "name": "Sản phẩm A",
+    "price": 150000,
+    "image": "img/drink.webp"
+  },
+
+  {
+    "id": 4,
+    "name": "Sản phẩm B",
+    "price": 200000,
+    "image": "img/doan2.webp"
+  },
+
+
+  {
+    "id": 5,
+    "name": "Sản phẩm A",
+    "price": 150000,
+    "image": "img/drink.webp"
+  },
+  {
+    "id": 6,
+    "name": "Sản phẩm B",
+    "price": 200000,
+    "image": "img/doan2.webp"
+  }
+]

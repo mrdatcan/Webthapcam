@@ -1,0 +1,53 @@
+<header class="site-header">
+  <div class="logo">
+    <a href="index.html"><img src="img/logo1.jpg" alt="Logo" /></a>
+  </div>
+
+  <nav class="navbar">
+    <a href="index.html">Trang chủ</a>
+    <a href="category.html">Danh mục</a>
+    <a href="product.html">Sản phẩm</a>
+    <a href="contact.html">Liên hệ</a>
+  </nav>
+
+  <div class="user-section" id="user-section">
+    <!-- Đăng nhập / Xin chào sẽ được JS chèn vào sau -->
+  </div>
+</header>
+<!-- components/header.html -->
+
+<header class="site-header">
+  <div class="logo">
+    <a href="index.html"><img src="img/logo1.jpg" alt="Logo" /></a>
+  </div>
+  <nav class="navbar">
+    <a href="index.html">Trang chủ</a>
+    <a href="category.html">Danh mục</a>
+    <a href="product.html">Sản phẩm</a>
+    <a href="contact.html">Liên hệ</a>
+  </nav>
+  <div id="user-section" class="auth-buttons"></div>
+</header>
+
+<!-- SCRIPT này đặt CUỐI FILE header.html -->
+<script>
+  const user = JSON.parse(localStorage.getItem("currentUser"));
+  const userSec = document.getElementById("user-section");
+
+  if (user) {
+    userSec.innerHTML = `
+      Xin chào, <strong>${user.username}</strong> |
+      <a href="#" onclick="logout()">Đăng xuất</a>
+    `;
+  } else {
+    userSec.innerHTML = `
+      <a href="login.html" class="btn-login">Đăng nhập</a>
+      <a href="register.html" class="btn-register">Đăng ký</a>
+    `;
+  }
+
+  function logout() {
+    localStorage.removeItem("currentUser");
+    window.location.reload();
+  }
+</script>

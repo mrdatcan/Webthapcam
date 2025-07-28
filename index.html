@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Web bán thời gian</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="components/product.css" />
+  <link rel="stylesheet" href="components/news.css" />
+  <link rel="stylesheet" href="components/category.css">
+  <link rel="stylesheet" href="components/header.css" />
+  <link rel="stylesheet" href="components/header.css">
+
+
+</head>
+<body>
+  
+  <div id="wrapper">
+    <!-- Header -->
+    <div id="header-placeholder"></div>
+
+    <!-- Banner giữ nguyên -->
+    <div id="banner"></div>
+    <div id="category-placeholder"></div>
+
+    <!-- Danh sách sản phẩm -->
+    <section class="product-section">
+      <h2 class="section-title">SẢN PHẨM PRODUCTS</h2>
+      <div id="product-list" class="product-list"></div>
+    </section>
+
+    <!-- Tin tức -->
+    <div id="news-placeholder"></div>
+
+    <!-- Footer -->
+    <div id="footer-placeholder"></div>
+  </div>
+
+  <!-- JS -->
+  <script>
+    // Load category
+    fetch("components/category-section.html")
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById("category-placeholder").innerHTML = data;
+      });
+
+    // Load header/footer
+    fetch("components/header.html")
+      .then(res => res.text())
+      .then(data => document.getElementById("header-placeholder").innerHTML = data);
+
+    fetch("components/footer.html")
+      .then(res => res.text())
+      .then(data => document.getElementById("footer-placeholder").innerHTML = data);
+
+    // Load products with popup event
+    fetch("data/products.json")
+      .then(res => res.json())
+      .then(data => {
+        const container = document.getElementById("product-list");
+        data.forEach(p => {
+          const card = document.createElement("div");
+          card.className = "product-card";
+          card.innerHTML = `
+            <img src="${p.image}" alt="${p.name}">
+            <h3>${p.name}</h3>
+            <p>${p.price.toLocaleString()} VNĐ</p>
+          `;
+          card.onclick = () => showPopup(p);
+          container.appendChild(card);
+        });
+      });
+
+    // Load news
+    fetch("components/news-section.html")
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById("news-placeholder").innerHTML = data;
+
+        fetch("data/news.json")
+          .then(res => res.json())
+          .then(newsData => {
+            const slider = document.getElementById("news-slider");
+            newsData.forEach(news => {
+              const item = document.createElement("div");
+              item.className = "news-item";
+              item.innerHTML = `
+                <img src="${news.image}" alt="${news.title}" />
+                <h3>${news.title}</h3>
+                <p>${news.date}</p>
+              `;
+              slider.appendChild(item);
+            });
+
+            let currentIndex = 0;
+            const scroll = () => {
+              const itemWidth = slider.querySelector('.news-item').offsetWidth + 20;
+              currentIndex = (currentIndex + 1) % newsData.length;
+              slider.scrollTo({ left: currentIndex * itemWidth, behavior: 'smooth' });
+            };
+            setInterval(scroll, 5000);
+          });
+      });
+
+    // Popup functions
+    function showPopup(product) {
+      document.getElementById("popup-image").src = product.image;
+      document.getElementById("popup-name").textContent = product.name;
+      document.getElementById("popup-desc").textContent = "Sản phẩm chất lượng";
+      document.getElementById("popup-price").textContent = product.price.toLocaleString() + " VNĐ";
+      document.getElementById("product-popup").classList.remove("hidden");
+    }
+
+    function closePopup() {
+      document.getElementById("product-popup").classList.add("hidden");
+    }
+  </script>
+  <script>
+  fetch("components/header.html")
+    .then(res => res.text())
+    .then(data => {
+      document.getElementById("header-placeholder").innerHTML = data;
+    });
+</script>
+<script>
+  fetch("components/header.html")
+    .then(res => res.text())
+    .then(data => {
+      document.getElementById("header-placeholder").innerHTML = data;
+    });
+</script>
+<script>
+  fetch("components/header.html")
+    .then(res => res.text())
+    .then(data => {
+      document.getElementById("header-placeholder").innerHTML = data;
+
+      // Xử lý user sau khi header đã được load
+      const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+      const userSection = document.getElementById("user-section");
+
+      if (currentUser) {
+        userSection.innerHTML = `
+          Xin chào, <strong>${currentUser.username}</strong> |
+          <a href="#" onclick="logout()">Đăng xuất</a>
+        `;
+      } else {
+        userSection.innerHTML = `
+          <a href="login.html" class="btn-login">Đăng nhập</a>
+          <a href="register.html" class="btn-register">Đăng ký</a>
+        `;
+      }
+    });
+
+  function logout() {
+    localStorage.removeItem("currentUser");
+    window.location.reload();
+  }
+</script>
+
+
+  <!-- Popup sản phẩm -->
+  <div id="product-popup" class="popup hidden">
+    <div class="popup-content">
+      <span class="close-btn" onclick="closePopup()">&times;</span>
+      <img id="popup-image" src="" alt="Product Image">
+      <h3 id="popup-name"></h3>
+      <p id="popup-desc"></p>
+      <p id="popup-price"></p>
+    </div>
+  </div>
+</body>
+</html>

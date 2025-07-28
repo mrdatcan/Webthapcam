@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Đăng nhập</title>
+  <link rel="stylesheet" href="components/auth.css">
+</head>
+<body>
+  <div class="auth-container">
+    <h2>Đăng nhập</h2>
+    <form id="login-form">
+      <input type="text" id="login-username" placeholder="Tên đăng nhập" required />
+      <input type="password" id="login-password" placeholder="Mật khẩu" required />
+      <button type="submit">Đăng nhập</button>
+      <p>Chưa có tài khoản? <a href="register.html">Đăng ký ngay</a></p>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById("login-form").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const username = document.getElementById("login-username").value;
+      const password = document.getElementById("login-password").value;
+
+      const users = JSON.parse(localStorage.getItem("users")) || [];
+
+      const user = users.find(u => u.username === username && u.password === password);
+
+      if (user) {
+        localStorage.setItem("currentUser", JSON.stringify(user));
+        alert("Đăng nhập thành công!");
+        window.location.href = "index.html";
+      } else {
+        alert("Sai tài khoản hoặc mật khẩu!");
+      }
+    });
+  </script>
+</body>
+</html>
+<script>
+document.getElementById("login-form").addEventListener("submit", async function (e) {
+  e.preventDefault();
+
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  try {
+    const res = await fetch("http://localhost:5000/api/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ email, password })
+    });
+
+    const data = await res.json();
+    if (res.ok) {
+      localStorage.setItem("currentUser", JSON.stringify(data.user));
+      document.getElementById("message").innerText = "✅ Đăng nhập thành công!";
+      setTimeout(() => window.location.href = "index.html", 1000);
+    } else {
+      document.getElementById("message").innerText = `❌ ${data.message || 'Lỗi đăng nhập!'}`;
+    }
+  } catch (err) {
+    console.error(err);
+    document.getElementById("message").innerText = "❌ Lỗi kết nối server!";
+  }
+});
+</script>

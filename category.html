@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <title>Danh mục sản phẩm</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="wrapper">
+    <!-- Sao chép phần header từ index.html -->
+    <div id="header">
+      <a href="index.html" class="logo">
+        <img src="img/logo1.jpg" alt="Logo" style="height: 40px;" />
+      </a>
+      <div id="menu">
+        <div class="item"><a href="index.html">Trang chủ</a></div>
+        <div class="item"><a href="category.html">Danh mục</a></div>
+        <div class="item"><a href="product.html">Sản phẩm</a></div>
+        <div class="item"><a href="contact.html">Liên hệ</a></div>
+      </div>
+      <div class="user-icon">
+        <img src="img/user-icon.png" alt="user" />
+      </div>
+    </div>
+
+    <!-- viết tiếp tục nội dung trang danh mục... -->
+    <div class="content">
+      <!-- ví dụ: thanh điều hướng danh mục -->
+      <div class="category-navigation">Hãy chọn danh mục ở bên dưới </div>
+
+      <!-- nơi để put danh sách sản phẩm theo danh mục -->
+       <div class="category-list">
+  <div class="category-item">
+    <a href="category-products.html?category=food">
+        <a href="product-detail.html">
+
+      <img src="img/cate_food.webp" alt="Đồ ăn" style="height: 50px;">
+      <p>Đồ ăn</p>
+    </a>
+  </div>
+  <div class="category-item">
+    <a href="category-products.html?category=drink">
+      <img src="img/cate_food.webp" alt="Nước uống" style="height: 50px;">
+      <p>Nước uống</p>
+    </a>
+  </div>
+  <div class="category-item">
+    <a href="category-products.html?category=vegan">
+      <img src="img/cate_food.webp" alt="Đồ chay" style="height: 50px;">
+      <p>Đồ chay</p>
+    </a>
+  </div>
+  <!-- Thêm nhiều danh mục ở đây  -->
+   <!-- Danh sách sản phẩm -->
+<div class="product-list">
+  <div class="product-item" onclick="openModal('Sản phẩm A', 'img/sanphamA.jpg', 'Mô tả sản phẩm A')">
+    <img src="img/sanphamA.jpg" alt="Sản phẩm A" />
+    <p>Sản phẩm A</p>
+  </div>
+  <!-- Thêm nhiều sản phẩm tương tự -->
+</div>
+
+<!-- Modal hiển thị chi tiết sản phẩm -->
+<div id="productModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <img id="modalImage" src="" alt="Ảnh sản phẩm" />
+    <h2 id="modalTitle"></h2>
+    <p id="modalDescription"></p>
+  </div>
+</div>
+
+</div>
+
+      <div class="product-list">...</div>
+    </div>
+  </div>
+</body>
+</html>
+

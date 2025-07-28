@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Danh sách sản phẩm</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="components/product-popup.css" />
+  <link rel="stylesheet" href="components/header.css" />
+</head>
+
+<body>
+  <!-- Nơi load header.html -->
+  <div id="header-placeholder"></div>
+
+  <div id="wrapper">
+    <div id="wp-products">
+      <h2>DANH SÁCH SẢN PHẨM</h2>
+      <ul id="list-products"></ul>
+    </div>
+  </div>
+
+  <!-- Popup sản phẩm -->
+  <div id="product-popup" class="popup hidden">
+    <div class="popup-content">
+      <span class="close-btn" onclick="closePopup()">&times;</span>
+      <img id="popup-image" src="" alt="Product Image">
+      <h3 id="popup-name"></h3>
+      <p id="popup-desc"></p>
+      <p id="popup-price"></p>
+    </div>
+  </div>
+
+  <!-- Script render sản phẩm -->
+  <script>
+    fetch('data/products.json')
+      .then(response => {
+        if (!response.ok) throw new Error('Không thể tải danh sách sản phẩm.');
+        return response.json();
+      })
+      .then(data => {
+        const list = document.getElementById('list-products');
+        data.forEach(product => {
+          const li = document.createElement('li');
+          li.className = 'item';
+          li.innerHTML = `
+            <img src="${product.image}" alt="${product.name}" onclick='showPopup(${JSON.stringify(product)})' style="height: 250px; cursor:pointer;">
+            <div class="star">${'<img src="img/star.webp" style="height: 10px;">'.repeat(5)}</div>
+            <div class="name">${product.name}</div>
+            <div class="desc">Mô tả đang cập nhật</div>
+            <div class="price">${product.price.toLocaleString()} VNĐ</div>
+          `;
+          list.appendChild(li);
+        });
+      })
+      .catch(err => {
+        document.getElementById('list-products').innerHTML = `<p>${err.message}</p>`;
+      });
+
+    function showPopup(product) {
+      document.getElementById("popup-image").src = product.image;
+      document.getElementById("popup-name").textContent = product.name;
+      document.getElementById("popup-desc").textContent = "Sản phẩm chất lượng";
+      document.getElementById("popup-price").textContent = product.price.toLocaleString() + " VNĐ";
+      document.getElementById("product-popup").classList.remove("hidden");
+    }
+
+    function closePopup() {
+      document.getElementById("product-popup").classList.add("hidden");
+    }
+  </script>
+
+  <!-- Script load header.html -->
+  <script>
+    fetch("components/header.html")
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById("header-placeholder").innerHTML = data;
+
+        const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+        const userSection = document.getElementById("user-section");
+
+        if (currentUser) {
+          userSection.innerHTML = `
+            Xin chào, <strong>${currentUser.username}</strong> |
+            <a href="#" onclick="logout()">Đăng xuất</a>
+          `;
+        } else {
+          userSection.innerHTML = `
+            <a href="login.html" class="btn-login">Đăng nhập</a>
+            <a href="register.html" class="btn-register">Đăng ký</a>
+          `;
+        }
+      });
+
+    function logout() {
+      localStorage.removeItem("currentUser");
+      window.location.reload();
+    }
+  </script>
+</body>
+</html>
