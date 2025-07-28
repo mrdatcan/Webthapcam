@@ -1,42 +1,32 @@
-<header class="site-header">
-  <div class="logo">
-    <a href="index.html"><img src="img/logo1.jpg" alt="Logo" /></a>
-  </div>
-
-  <nav class="navbar">
-    <a href="index.html">Trang chủ</a>
-    <a href="category.html">Danh mục</a>
-    <a href="product.html">Sản phẩm</a>
-    <a href="contact.html">Liên hệ</a>
-  </nav>
-
-  <div class="user-section" id="user-section">
-    <!-- Đăng nhập / Xin chào sẽ được JS chèn vào sau -->
-  </div>
-</header>
 <!-- components/header.html -->
 
 <header class="site-header">
   <div class="logo">
-    <a href="index.html"><img src="img/logo1.jpg" alt="Logo" /></a>
+    <a href="index.html">
+      <img src="img/logo1.jpg" alt="Logo" />
+    </a>
   </div>
+
   <nav class="navbar">
     <a href="index.html">Trang chủ</a>
     <a href="category.html">Danh mục</a>
     <a href="product.html">Sản phẩm</a>
     <a href="contact.html">Liên hệ</a>
   </nav>
-  <div id="user-section" class="auth-buttons"></div>
+
+  <div id="user-section" class="user-section">
+    <!-- JavaScript sẽ chèn nội dung ở đây -->
+  </div>
 </header>
 
-<!-- SCRIPT này đặt CUỐI FILE header.html -->
+<!-- SCRIPT đặt cuối header để xử lý hiển thị đăng nhập / đăng xuất -->
 <script>
   const user = JSON.parse(localStorage.getItem("currentUser"));
   const userSec = document.getElementById("user-section");
 
   if (user) {
     userSec.innerHTML = `
-      Xin chào, <strong>${user.username}</strong> |
+      <span>Xin chào, <strong>${user.username}</strong></span>
       <a href="#" onclick="logout()">Đăng xuất</a>
     `;
   } else {
@@ -48,6 +38,6 @@
 
   function logout() {
     localStorage.removeItem("currentUser");
-    window.location.reload();
+    window.location.href = "index.html";
   }
 </script>
